@@ -1,0 +1,28 @@
+# docker-compose for termelix
+#
+version: "2"
+services:
+  # Webapp app
+  app:
+    image: phlax/termelix:app
+    env_file:
+      - docker/config/webapp.env
+    environment:
+      - LOCAL_USER_ID=1000
+    depends_on:
+      - elastic
+    command: ["/app/docker/run.sh"]
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+
+  # -----------------------------
+  # External services
+  # -----------------------------
+
+  # https://hub.docker.com/_/phlax/termelix/
+  elastic:
+    image: phlax/termelix:elastic
+  postgres:
+    image: phlax/termelix:postgres
